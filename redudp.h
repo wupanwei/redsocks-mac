@@ -27,6 +27,7 @@ typedef struct udprelay_subsys_t {
 
 typedef struct redudp_config_t {
 	struct sockaddr_storage bindaddr;
+    int bindaddr_size;
 	struct sockaddr_storage relayaddr;
 	// TODO:           outgoingaddr;
 	struct sockaddr_storage destaddr;

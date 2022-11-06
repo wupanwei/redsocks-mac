@@ -30,7 +30,9 @@ typedef struct relay_subsys_t {
 
 typedef struct redsocks_config_t {
 	struct sockaddr_storage bindaddr;
+    int bindaddr_size;
 	struct sockaddr_storage relayaddr;
+    int relayaddr_size;
 	char *bind;
 	char *relay;
 	char *type;

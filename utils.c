@@ -498,8 +498,8 @@ int make_socket_transparent(int fd)
 {
     int on = 1;
     int error = 0;
-#ifdef SOL_IPV6
     int error_6 = 0;
+#ifdef SOL_IPV6
     // Try IPv6 first
     error_6 = setsockopt(fd, SOL_IPV6, IPV6_TRANSPARENT, &on, sizeof(on));
     if (error_6)

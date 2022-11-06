@@ -507,8 +507,10 @@ static int redudp_onexit(parser_section *section)
     if (instance->config.bind) {
         struct sockaddr * addr = (struct sockaddr *)&instance->config.bindaddr;
         int addr_size = sizeof(instance->config.bindaddr);
-        if (evutil_parse_sockaddr_port(instance->config.bind, addr, &addr_size))
+        if (evutil_parse_sockaddr_port(instance->config.bind, addr, &addr_size) )
             err = "invalid bind address";
+        else
+            instance->config.bindaddr_size = addr_size;
     }
     if (!err && instance->config.relay) {
         struct sockaddr * addr = (struct sockaddr *)&instance->config.relayaddr;
@@ -616,7 +618,7 @@ static int redudp_init_instance(redudp_instance *instance)
     if (apply_reuseport(fd))
         log_error(LOG_WARNING, "Continue without SO_REUSEPORT enabled");
 
-    error = bind(fd, (struct sockaddr*)&instance->config.bindaddr, sizeof(instance->config.bindaddr));
+    error = bind(fd, (struct sockaddr*)&instance->config.bindaddr, instance->config.bindaddr_size);
     if (error) {
         log_errno(LOG_ERR, "bind");
         goto fail;

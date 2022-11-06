@@ -199,16 +199,19 @@ static int redsocks_onexit(parser_section *section)
     if (instance->config.bind) {
         struct sockaddr * addr = (struct sockaddr *)&instance->config.bindaddr;
         int addr_size = sizeof(instance->config.bindaddr);
-        if (evutil_parse_sockaddr_port(instance->config.bind, addr, &addr_size))
+        if (evutil_parse_sockaddr_port(instance->config.bind, addr, & addr_size ))
             err = "invalid bind address";
+        else
+            instance->config.bindaddr_size = addr_size;
     }
     if (!err && instance->config.relay) {
         struct sockaddr * addr = (struct sockaddr *)&instance->config.relayaddr;
         int addr_size = sizeof(instance->config.relayaddr);
-        if (evutil_parse_sockaddr_port(instance->config.relay, addr, &addr_size))
+        if (evutil_parse_sockaddr_port(instance->config.relay, addr, &addr_size ))
             err = "invalid relay address";
+        else
+            instance->config.relayaddr_size = addr_size;
     }
-
     if (!err && instance->config.type) {
         relay_subsys **ss;
         FOREACH(ss, relay_subsystems) {
@@ -1002,7 +1005,7 @@ static int redsocks_init_instance(redsocks_instance *instance)
 
     error = bind(fd,
                  (struct sockaddr*)&instance->config.bindaddr,
-                 sizeof(instance->config.bindaddr));
+                 instance->config.bindaddr_size);
     if (error) {
         log_errno(LOG_ERR, "bind");
         goto fail;

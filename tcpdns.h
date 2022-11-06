@@ -3,6 +3,7 @@
 
 typedef struct tcpdns_config_t {
 	struct sockaddr_storage bindaddr;
+    int bindaddr_size;
 	struct sockaddr_storage tcpdns1_addr;
 	struct sockaddr_storage tcpdns2_addr;
 	char *bind;

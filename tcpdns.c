@@ -462,8 +462,9 @@ static int tcpdns_init_instance(tcpdns_instance *instance)
     if (apply_reuseport(fd))
         log_error(LOG_WARNING, "Continue without SO_REUSEPORT enabled");
 
-    error = bind(fd, (struct sockaddr*)&instance->config.bindaddr, sizeof(instance->config.bindaddr));
+    error = bind(fd, (struct sockaddr*)&instance->config.bindaddr, instance->config.bindaddr_size);
     if (error) {
+        printf("bind error: %s \n", instance->config.bind);
         log_errno(LOG_ERR, "bind");
         goto fail;
     }
