@@ -408,6 +408,8 @@ static int tcpdns_onexit(parser_section *section)
         int addr_size = sizeof(instance->config.bindaddr);
         if (evutil_parse_sockaddr_port(instance->config.bind, addr, &addr_size))
             err = "invalid bind address";
+        else
+            instance->config.bindaddr_size = addr_size;
     }
     if (!err && instance->config.tcpdns1) {
         struct sockaddr * addr = (struct sockaddr *)&instance->config.tcpdns1_addr;
